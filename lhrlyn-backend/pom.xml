@@ -6,16 +6,22 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.lhrlyn.cn</groupId>
     <artifactId>lhrlyn-backend</artifactId>
     <version>v1.0.0</version>
+    <packaging>pom</packaging>
     <name>lhrlyn-backend</name>
     <description>about lhr and lyn !</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
+    <modules>
+        <module>lhrlyn-admin</module>
+    </modules>
+
+    <dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -72,6 +78,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
