@@ -20,7 +20,7 @@ public class LoginService {
         user1.setUsername("admin");
         user1.setPassword("123456");
         if (user1.getUsername().equals(user.getUsername()) && user1.getPassword().equals(user.getPassword())) {
-            return user;
+            return user1;
         }
         return new User();
     }
