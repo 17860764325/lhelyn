@@ -1,2 +1,14 @@
 server:
   port: 8080
+
+  redis:
+    database: 0
+    host: localhost
+    password: 668827
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: -1
+      min-idle: 0
+    port: 6379
+    timeout: 3000
