@@ -37,7 +37,8 @@ public class loginController extends Controller {
     public User login(@RequestBody  User user) {
         User user1 = loginService.checkUser(user);
         log.info(user1.toString());
-        if (StringUtils.isEmpty(user1)) {
+        User equalsUser = new User();
+        if (!equalsUser.equals(user1)) {
             // 生成token
             String token = JwtUtil.sign(user1.getUserid());
             redisTemplate.opsForValue().set(token, user1, Duration.ofMinutes(30L));
