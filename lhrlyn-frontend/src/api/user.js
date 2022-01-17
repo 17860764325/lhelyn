@@ -8,6 +8,7 @@ export function login(data) {
   })
 }
 
+// 获取用户信息和权限信息
 export function getInfo(token) {
   return request({
     url: '/lhrlyn/admin/user/info',

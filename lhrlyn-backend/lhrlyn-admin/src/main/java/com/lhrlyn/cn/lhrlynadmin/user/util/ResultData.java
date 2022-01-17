@@ -1,5 +1,6 @@
 package com.lhrlyn.cn.lhrlynadmin.user.util;
 
+import com.lhrlyn.cn.lhrlynadmin.user.enity.User;
 import lombok.Data;
 
 @Data
