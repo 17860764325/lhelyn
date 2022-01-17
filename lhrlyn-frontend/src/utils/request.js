@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -13,13 +12,11 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-
-    if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+    // do something before request is sent,在请求发送之前做点什么
+    const token = localStorage.getItem('item')
+    if (token) {
+      // 判断是否存在token，如果存在的话，则每个http的header上都会加上token
+      config.headers['token'] = token
     }
     return config
   },
@@ -33,7 +30,9 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   /**
+   * 如果您想获取http信息，如标题或状态
    * If you want to get http information such as headers or status
+   * 请返回response=>response
    * Please return  response => response
   */
 
@@ -54,9 +53,9 @@ service.interceptors.response.use(
       })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+      // 50008：非法代币；50012：其他客户端已登录；50014：令牌已过期；
+      if (res.status === 999) {
+        MessageBox.confirm('您需要登陆', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
           cancelButtonText: 'Cancel',
           type: 'warning'

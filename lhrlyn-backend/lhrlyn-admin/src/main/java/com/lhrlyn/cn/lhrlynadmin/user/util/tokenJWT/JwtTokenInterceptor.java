@@ -1,6 +1,5 @@
-package com.lhrlyn.cn.lhrlynadmin.user.util.token;
+package com.lhrlyn.cn.lhrlynadmin.user.util.tokenJWT;
 
-import com.lhrlyn.cn.lhrlynadmin.user.util.redis.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;

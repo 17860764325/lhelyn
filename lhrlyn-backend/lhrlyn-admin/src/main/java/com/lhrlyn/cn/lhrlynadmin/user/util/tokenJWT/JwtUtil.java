@@ -1,4 +1,4 @@
-package com.lhrlyn.cn.lhrlynadmin.user.util.token;
+package com.lhrlyn.cn.lhrlynadmin.user.util.tokenJWT;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;

@@ -1,4 +1,4 @@
-package com.lhrlyn.cn.lhrlynadmin.user.util.token;
+package com.lhrlyn.cn.lhrlynadmin.user.util.tokenJWT;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

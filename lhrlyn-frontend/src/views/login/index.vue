@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <img class="img" src="../../static/1198282.jpg">
+    <!-- <img class="img" src="../../static/1198282.jpg"> -->
     <div class="login">
       <div>
         <span>userName:{{ form.userName }}-</span>
@@ -50,7 +50,12 @@ export default {
       this.user.username = this.form.username
       this.user.password = this.form.password
       const response = await login(this.user)
-      console.log(response.data)
+      console.log(response)
+      if (response.status === 100) {
+        localStorage.setItem('token', response.data.token) // 缓存用户信息
+        // 登录成功跳转到主页
+        this.$router.push({ path: '/' }, () => {})
+      }
     }
   }
 }

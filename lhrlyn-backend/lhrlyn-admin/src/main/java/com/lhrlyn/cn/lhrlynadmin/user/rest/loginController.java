@@ -2,12 +2,13 @@ package com.lhrlyn.cn.lhrlynadmin.user.rest;
 
 import com.lhrlyn.cn.lhrlynadmin.user.enity.User;
 import com.lhrlyn.cn.lhrlynadmin.user.service.LoginService;
+import com.lhrlyn.cn.lhrlynadmin.user.util.ResultData;
+import com.lhrlyn.cn.lhrlynadmin.user.util.ReturnCode;
 import com.lhrlyn.cn.lhrlynadmin.user.util.redis.RedisUtils;
-import com.lhrlyn.cn.lhrlynadmin.user.util.token.JwtUtil;
+import com.lhrlyn.cn.lhrlynadmin.user.util.tokenJWT.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class loginController extends Controller {
      * @return: java.lang.String
      */
     @PostMapping("/user/login")
-    public User login(@RequestBody  User user) {
+    public ResultData login(@RequestBody  User user) {
         User user1 = loginService.checkUser(user);
         log.info(user1.toString());
         User equalsUser = new User();
@@ -43,11 +44,12 @@ public class loginController extends Controller {
             String token = JwtUtil.sign(user1.getUserid());
             redisTemplate.opsForValue().set(token, user1, Duration.ofMinutes(30L));
             user1.setToken(token);
-            return user1;
+            return ResultData.success(user1);
         }
         User user2 = new User();
         user2.setToken("err");
-        return user2;
+        return ResultData.fail(ReturnCode.USERNAME_OR_PASSWORD_ERROR.getCode(),ReturnCode.USERNAME_OR_PASSWORD_ERROR.getMessage());
+
     }
 
     /**
