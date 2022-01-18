@@ -9,11 +9,10 @@ export function login(data) {
 }
 
 // 获取用户信息和权限信息
-export function getInfo(token) {
+export function getInfo() {
   return request({
-    url: '/lhrlyn/admin/user/info',
-    method: 'get',
-    params: { token }
+    url: '/user/info',
+    method: 'get'
   })
 }
 

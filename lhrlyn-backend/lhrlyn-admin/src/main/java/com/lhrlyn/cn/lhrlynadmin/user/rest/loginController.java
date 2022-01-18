@@ -1,29 +1,25 @@
 package com.lhrlyn.cn.lhrlynadmin.user.rest;
 
+import com.lhrlyn.cn.lhrlynadmin.user.dto.UserDto;
 import com.lhrlyn.cn.lhrlynadmin.user.enity.User;
-import com.lhrlyn.cn.lhrlynadmin.user.service.LoginService;
+import com.lhrlyn.cn.lhrlynadmin.user.enity.Userinfo;
+import com.lhrlyn.cn.lhrlynadmin.user.service.impl.LoginServiceImpl;
 import com.lhrlyn.cn.lhrlynadmin.user.util.ResultData;
-import com.lhrlyn.cn.lhrlynadmin.user.util.ReturnCode;
 import com.lhrlyn.cn.lhrlynadmin.user.util.redis.RedisUtils;
-import com.lhrlyn.cn.lhrlynadmin.user.util.tokenJWT.JwtUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
-@Slf4j
 @RestController
 public class loginController extends Controller {
 
     @Autowired
     private RedisUtils redisUtils;
     @Autowired
-    private LoginService loginService;
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private LoginServiceImpl loginServiceImpl;
 
     /**
      * 登录测试
@@ -35,45 +31,27 @@ public class loginController extends Controller {
      * @return: java.lang.String
      */
     @PostMapping("/user/login")
-    public ResultData login(@RequestBody  User user) {
-        User user1 = loginService.checkUser(user);
-        log.info(user1.toString());
-        User equalsUser = new User();
-        if (!equalsUser.equals(user1)) {
-            // 生成token
-            String token = JwtUtil.sign(user1.getUserid());
-            redisTemplate.opsForValue().set(token, user1, Duration.ofMinutes(30L));
-            user1.setToken(token);
-            return ResultData.success(user1);
-        }
-        User user2 = new User();
-        user2.setToken("err");
-        return ResultData.fail(ReturnCode.USERNAME_OR_PASSWORD_ERROR.getCode(),ReturnCode.USERNAME_OR_PASSWORD_ERROR.getMessage());
-
+    public ResultData login(@RequestBody UserDto user) {
+        return loginServiceImpl.checkUser(user);
     }
 
     /**
-     * 根据token返回用户数据
-     *
-     * @param request
-     * @return
+     *  获取用户信息，包括权限和一些基本信息
+     * @author lhr
+     * @date  2022/1/17 9:07 下午
+     * @param
+     * @return: com.lhrlyn.cn.lhrlynadmin.user.enity.Userinfo
      */
-    @GetMapping("getUserOfLogin")
-    public Object getUserOfLogin(HttpServletRequest request) {
+    @GetMapping("/user/info")
+    public ResultData<Userinfo> getUserInfo(HttpServletRequest request) {
         String token = request.getHeader("token");
-        Object user = redisTemplate.opsForValue().get(token);//封装到redis里
-        if (user != null) {
-            return user;
-        } else {
-            return new User();
-        }
-
+        return loginServiceImpl.getUserInfo(token);
     }
-        @GetMapping("/redis/test")
-        public String redisTest (String key, String value){
-            redisUtils.set(key, value);
-            return redisUtils.get(key).toString();
-        }
 
 
+    @GetMapping("/redis/test")
+    public String redisTest(String key, String value) {
+        redisUtils.set(key, value);
+        return redisUtils.get(key).toString();
     }
+}

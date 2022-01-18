@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
+import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -13,11 +14,13 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent,在请求发送之前做点什么
-    const token = localStorage.getItem('item')
+
+    const token = getToken()
     if (token) {
       // 判断是否存在token，如果存在的话，则每个http的header上都会加上token
       config.headers['token'] = token
     }
+
     return config
   },
   error => {
