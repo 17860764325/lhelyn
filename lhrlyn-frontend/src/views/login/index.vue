@@ -2,10 +2,6 @@
   <div class="page">
     <!-- <img class="img" src="../../static/1198282.jpg"> -->
     <div class="login">
-      <div>
-        <span>userName:{{ form.userName }}-</span>
-        <span>password:{{ form.password }}</span>
-      </div>
       <el-form ref="form" class="loginForm" :model="form" :inline="false" size="normal">
         <h1 class="title">芝麻开门</h1>
         <el-form-item>
@@ -33,29 +29,33 @@ export default {
     return {
       login,
       form: {
-        username: undefined,
-        password: undefined,
-        code: undefined
-      },
-      user: {
-        username: undefined,
-        password: undefined
+        username: 'admin',
+        password: 123456
       }
     }
   },
   methods: {
     async begin() {
-      console.log(this.form.username)
-      console.log(this.form.password)
-      this.user.username = this.form.username
-      this.user.password = this.form.password
-      const response = await login(this.user)
-      console.log(response)
-      if (response.status === 100) {
-        localStorage.setItem('token', response.data.token) // 缓存用户信息
-        // 登录成功跳转到主页
-        this.$router.push({ path: '/' }, () => {})
-      }
+      // console.log(this.form.username)
+      // console.log(this.form.password)
+      // this.user.username = this.form.username
+      // this.user.password = this.form.password
+      // const response = await login(this.user)
+      // console.log(response)
+      // if (response.status === 100) {
+      //   localStorage.setItem('token', response.data.token) // 缓存用户信息
+      //   // 登录成功跳转到主页
+      //   this.$router.push({ path: this.redirect || '/' }, () => {})
+      // }
+      this.loading = true
+      this.$store.dispatch('user/login', this.form)
+        .then(() => {
+          this.$router.push({ path: this.redirect || '/' })
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     }
   }
 }

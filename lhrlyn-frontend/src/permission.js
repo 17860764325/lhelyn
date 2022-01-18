@@ -49,9 +49,11 @@ router.beforeEach(async(to, from, next) => {
           // get user info 获取用户信息
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           // 注意：角色必须是对象数组！例如：['admin']或，['developer'，'editor']
+          // 直接获取用户的用户信息
           const { roles } = await store.dispatch('user/getInfo')
 
           // generate accessible routes map based on roles 基于角色生成可访问的路线图
+          // 生成关于用户的动态路由表
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
 
           // dynamically add accessible routes 动态添加可访问的路由

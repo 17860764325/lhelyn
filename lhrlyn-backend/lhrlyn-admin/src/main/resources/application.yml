@@ -1,14 +1,27 @@
 server:
   port: 8080
 
-  redis:
-    database: 0
-    host: localhost
-    password: 668827
-    pool:
-      max-active: 8
-      max-idle: 8
-      max-wait: -1
-      min-idle: 0
-    port: 6379
-    timeout: 3000
+redis:
+  database: 0
+  host: localhost
+  password: 668827
+  pool:
+    max-active: 8
+    max-idle: 8
+    max-wait: -1
+    min-idle: 0
+  port: 6379
+  timeout: 3000
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/lhrlyn?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true&serverTimezone=UTC&useSSL=false&allowMultiQueries=true
+    username: root
+    password: liuyinuo1314
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  type-aliases-package: com.lhrlyn.cn.lhrlynadmin.user.enity
+logging:
+  level:
+    com:
+      tk: debug
